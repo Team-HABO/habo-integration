@@ -1,0 +1,36 @@
+{
+	"name": "service-transaction",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"test": "npx vitest --coverage.enabled true --run",
+		"test:watch": "npx vitest --coverage.enabled true",
+		"lint": "npx eslint .",
+		"generate": "npx prisma generate",
+		"migrate": "npx prisma migrate deploy"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"type": "module",
+	"devDependencies": {
+		"@eslint/js": "^9.39.2",
+		"@types/node": "^25.5.0",
+		"@types/pg": "^8.16.0",
+		"@vitest/coverage-v8": "^4.0.18",
+		"eslint": "^9.39.2",
+		"prisma": "^7.4.1",
+		"tsx": "^4.21.0",
+		"typescript": "^5.9.3",
+		"typescript-eslint": "^8.55.0",
+		"vitest": "^4.0.18"
+	},
+	"dependencies": {
+		"@prisma/adapter-pg": "^7.4.1",
+		"@prisma/client": "^7.4.1",
+		"dotenv": "^17.3.1",
+		"pg": "^8.18.0",
+		"uuid": "^13.0.0"
+	}
+}
