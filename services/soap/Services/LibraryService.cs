@@ -313,4 +313,120 @@ public class LibraryService(AppDbContext db) : ILibraryService
         _db.SaveChanges();
         return author;
     }
+
+    public int CreatePublishingCompany(CreatePublishingCompany request)
+    {
+        if (string.IsNullOrWhiteSpace(request.CName))
+        {
+            throw new FaultException<ValidationFault>(
+                new ValidationFault { ErrorCode = "INVALID_NAME", ErrorMessage = "Name cannot be empty." },
+                new FaultReason("Validation failed")
+            );
+        }
+
+        var publishingCompany = new Tpublishingcompany
+        {
+            CName = request.CName
+        };
+
+        _db.Tpublishingcompanies.Add(publishingCompany);
+        _db.SaveChanges();
+
+        return publishingCompany.NPublishingCompanyId;
+    }
+
+    public Tpublishingcompany GetPublishingCompanyById(GetPublishingCompanyById request)
+    {
+        var publishingCompany =
+            _db.Tpublishingcompanies.FirstOrDefault(pc => pc.NPublishingCompanyId == request.NPublishingCompanyId);
+
+        if (publishingCompany is null)
+        {
+            throw new FaultException<NotFoundFault>(
+                new NotFoundFault
+                {
+                    ErrorCode = "PUBLISHING_COMPANY_NOT_FOUND",
+                    ErrorMessage = $"No publishing company with ID {request.NPublishingCompanyId}."
+                },
+                new FaultReason("Publishing company not found")
+            );
+        }
+
+        return publishingCompany;
+    }
+
+    public List<Tpublishingcompany> ListPublishingCompanies(ListPublishingCompanies request)
+    {
+        var publishingCompanies = _db.Tpublishingcompanies.ToList();
+
+        return publishingCompanies;
+    }
+
+    public Tpublishingcompany UpdatePublishingCompany(UpdatePublishingCompany request)
+    {
+        var publishingCompany =
+            _db.Tpublishingcompanies.FirstOrDefault(pc => pc.NPublishingCompanyId == request.NPublishingCompanyId);
+
+        if (publishingCompany is null)
+        {
+            throw new FaultException<NotFoundFault>(
+                new NotFoundFault
+                {
+                    ErrorCode = "PUBLISHING_COMPANY_NOT_FOUND",
+                    ErrorMessage = $"No publishing company with ID {request.NPublishingCompanyId}."
+                },
+                new FaultReason("Publishing company not found")
+            );
+        }
+
+
+        if (string.IsNullOrWhiteSpace(request.CName))
+        {
+            throw new FaultException<ValidationFault>(
+                new ValidationFault { ErrorCode = "INVALID_NAME", ErrorMessage = "Name cannot be empty." },
+                new FaultReason("Validation failed")
+            );
+        }
+
+        publishingCompany.CName = request.CName;
+
+
+        _db.SaveChanges();
+        return publishingCompany;
+    }
+
+    public Tpublishingcompany DeletePublishingCompany(DeletePublishingCompany request)
+    {
+        var publishingCompany =
+            _db.Tpublishingcompanies.FirstOrDefault(pc => pc.NPublishingCompanyId == request.NPublishingCompanyId);
+
+        if (publishingCompany is null)
+        {
+            throw new FaultException<NotFoundFault>(
+                new NotFoundFault
+                {
+                    ErrorCode = "PUBLISHING_COMPANY_NOT_FOUND",
+                    ErrorMessage = $"No publishing company with ID {request.NPublishingCompanyId}."
+                },
+                new FaultReason("Publishing company not found")
+            );
+        }
+
+        if (_db.Tbooks.Any(b => b.NPublishingCompanyId == publishingCompany.NPublishingCompanyId))
+        {
+            throw new FaultException<ConflictFault>(
+                new ConflictFault
+                {
+                    ErrorCode = "PUBLISHING_COMPANY_HAS_BOOKS",
+                    ErrorMessage =
+                        $"Publishing company with ID {request.NPublishingCompanyId} cannot be deleted because it is referenced by one or more books."
+                },
+                new FaultReason("Conflict")
+            );
+        }
+
+        _db.Tpublishingcompanies.Remove(publishingCompany);
+        _db.SaveChanges();
+        return publishingCompany;
+    }
 }

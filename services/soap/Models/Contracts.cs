@@ -5,13 +5,13 @@ namespace soap.Models;
 [DataContract(Namespace = "http://example.com/library/wsdl")]
 public class CreateBook
 {
-    [DataMember(IsRequired = true)] public string CTitle { get; set; } = null!;
+    [DataMember(IsRequired = true, Order = 0)] public string CTitle { get; set; } = null!;
 
-    [DataMember(IsRequired = true)] public int NAuthorId { get; set; }
+    [DataMember(IsRequired = true, Order = 1)] public int NAuthorId { get; set; }
 
-    [DataMember(IsRequired = true)] public int NPublishingYear { get; set; }
+    [DataMember(IsRequired = true, Order = 2)] public int NPublishingYear { get; set; }
 
-    [DataMember(IsRequired = true)] public int NPublishingCompanyId { get; set; }
+    [DataMember(IsRequired = true, Order = 3)] public int NPublishingCompanyId { get; set; }
 }
 
 [DataContract(Namespace = "http://example.com/library/wsdl")]
@@ -23,15 +23,15 @@ public class GetBookById
 [DataContract(Namespace = "http://example.com/library/wsdl")]
 public class UpdateBook
 {
-    [DataMember(IsRequired = true)] public int NBookId { get; set; }
+    [DataMember(IsRequired = true, Order = 0)] public int NBookId { get; set; }
 
-    [DataMember] public string? CTitle { get; set; }
+    [DataMember(Order = 1)] public string? CTitle { get; set; }
 
-    [DataMember] public int? NAuthorId { get; set; }
+    [DataMember(Order = 2)] public int? NAuthorId { get; set; }
 
-    [DataMember] public int? NPublishingYear { get; set; }
+    [DataMember(Order = 3)] public int? NPublishingYear { get; set; }
 
-    [DataMember] public int? NPublishingCompanyId { get; set; }
+    [DataMember(Order = 4)] public int? NPublishingCompanyId { get; set; }
 }
 
 [DataContract(Namespace = "http://example.com/library/wsdl")]
@@ -77,6 +77,39 @@ public class DeleteAuthor
     [DataMember] public int NAuthorId { get; set; }
 }
 
+[DataContract(Namespace = "http://example.com/library/wsdl")]
+public class CreatePublishingCompany
+{
+    [DataMember] public string CName { get; set; } = null!;
+}
+
+[DataContract(Namespace = "http://example.com/library/wsdl")]
+public class GetPublishingCompanyById
+{
+    [DataMember] public int NPublishingCompanyId { get; set; }
+}
+
+[DataContract(Namespace = "http://example.com/library/wsdl")]
+public class ListPublishingCompanies
+{
+}
+
+[DataContract(Namespace = "http://example.com/library/wsdl")]
+public class UpdatePublishingCompany
+{
+    [DataMember(IsRequired = true, Order = 0)] public int NPublishingCompanyId { get; set; }
+    [DataMember(IsRequired = true, Order = 1)] public string CName { get; set; } = null!;
+}
+
+[DataContract(Namespace = "http://example.com/library/wsdl")]
+public class DeletePublishingCompany
+{
+    [DataMember] public int NPublishingCompanyId { get; set; }
+}
+
+
+
+// ---------- Faults ---------- //
 [DataContract(Namespace = "http://example.com/library/wsdl")]
 public class NotFoundFault
 {

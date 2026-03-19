@@ -44,4 +44,25 @@ public interface ILibraryService
     [FaultContract(typeof(NotFoundFault))]
     [FaultContract(typeof(ConflictFault))]
     Tauthor DeleteAuthor(DeleteAuthor request);
+
+    [OperationContract]
+    [FaultContract(typeof(ValidationFault))]
+    int CreatePublishingCompany(CreatePublishingCompany request);
+
+    [OperationContract]
+    [FaultContract(typeof(NotFoundFault))]
+    Tpublishingcompany GetPublishingCompanyById(GetPublishingCompanyById request);
+
+    [OperationContract]
+    List<Tpublishingcompany> ListPublishingCompanies(ListPublishingCompanies request);
+
+    [OperationContract]
+    [FaultContract(typeof(NotFoundFault))]
+    [FaultContract(typeof(ValidationFault))]
+    Tpublishingcompany UpdatePublishingCompany(UpdatePublishingCompany request);
+
+    [OperationContract]
+    [FaultContract(typeof(NotFoundFault))]
+    [FaultContract(typeof(ConflictFault))]
+    Tpublishingcompany DeletePublishingCompany(DeletePublishingCompany request);
 }
