@@ -15,12 +15,8 @@ builder.Services.AddScoped<ILibraryService, LibraryService>();
 
 var app = builder.Build();
 
-// app.UseSoapEndpoint<ILibraryService>(
-//     path: "/UserService.asmx",
-//     new SoapEncoderOptions(),
-//     SoapSerializer.DataContractSerializer
-// );
-
 app.UseSoapEndpoint<ILibraryService>("/LibraryService.asmx", new SoapEncoderOptions());
+
+app.MapGet("/health", () => Results.Ok("healthy"));
 
 app.Run();
