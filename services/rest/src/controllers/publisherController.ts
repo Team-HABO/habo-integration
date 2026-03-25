@@ -51,7 +51,7 @@ export const deletePublisher = async (req: Request<{ id: string }>, res: Respons
 
 		await service.deletePublisher(id);
 
-		res.status(204);
+		res.status(204).end();
 	} catch (error) {
 		next(error);
 	}
