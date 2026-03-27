@@ -690,3 +690,4 @@ $RECYCLE.BIN/
 # End of https://www.toptal.com/developers/gitignore/api/macos,windows,java,oxygenxmleditor,visualstudiocode,csharp,dotnetcore,python
 
 services/rest/generated/prisma/**
+services/graph/src/generated/prisma
