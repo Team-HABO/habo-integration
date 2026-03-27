@@ -5,7 +5,6 @@ import sqlite from "better-sqlite3";
 const betterSqlite = new sqlite("./prisma/library.db");
 const adapter = new PrismaBetterSqlite3({
   url: "file:./prisma/library.db",
-  // url: env("DATABASE_URL"),
 });
 const prisma = new PrismaClient({ adapter });
 

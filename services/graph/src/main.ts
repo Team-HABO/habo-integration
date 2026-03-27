@@ -14,9 +14,15 @@ export const schema = createSchema({
   },
 });
 
+/**
+ * Main entry point to start the GraphQL server
+ * * @remarks
+ * /live is a health check endpoint that returns 200 OK if the server is running.
+ */
 function main() {
   const yoga = createYoga<GraphQLContext>({
     schema,
+    healthCheckEndpoint: "/live",
     context: createContext,
   });
 
