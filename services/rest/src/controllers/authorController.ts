@@ -1,40 +1,61 @@
 import type { Request, Response, NextFunction } from "express";
+import * as service from "../services/authorService";
 
-export const createAuthor = (req: Request, res: Response, next: NextFunction) => {
+export const createAuthor = async (req: Request<{}, {}, { name: string; surname: string }, {}>, res: Response, next: NextFunction) => {
 	try {
-		console.log("");
+		const { name, surname } = req.body;
+		const author = await service.createAuthor(name, surname);
+		res.status(201).json(author);
 	} catch (error) {
 		next(error);
 	}
 };
 
-export const getAuthors = (req: Request, res: Response, next: NextFunction) => {
+export const getAuthors = async (_req: Request, res: Response, next: NextFunction) => {
 	try {
-		console.log("");
+		const authors = await service.getAuthors();
+		res.status(200).json(authors);
 	} catch (error) {
 		next(error);
 	}
 };
 
-export const getAuthorById = (req: Request, res: Response, next: NextFunction) => {
+export const getAuthorById = async (req: Request<{ id: string }>, res: Response, next: NextFunction) => {
 	try {
-		console.log("");
+		const id = parseInt(req.params.id);
+
+		const author = await service.getAuthorById(id);
+
+		res.status(200).json(author);
 	} catch (error) {
 		next(error);
 	}
 };
 
-export const updateAuthor = (req: Request, res: Response, next: NextFunction) => {
+export const updateAuthor = async (
+	req: Request<{ id: string }, {}, { name: string; surname: string }, {}>,
+	res: Response,
+	next: NextFunction
+) => {
 	try {
-		console.log("");
+		const id = parseInt(req.params.id);
+		const { name, surname } = req.body;
+
+		const author = await service.updateAuthor(id, name, surname);
+
+		res.status(200).json(author);
 	} catch (error) {
 		next(error);
 	}
 };
 
-export const deleteAuthor = (req: Request, res: Response, next: NextFunction) => {
+export const deleteAuthor = async (req: Request<{ id: string }>, res: Response, next: NextFunction) => {
 	try {
-		console.log("");
+		const id = parseInt(req.params.id);
+
+		await service.deleteAuthor(id);
+
+		res.status(204).end();
 	} catch (error) {
 		next(error);
 	}
