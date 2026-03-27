@@ -7,7 +7,6 @@ on:
       - initgraphql
     paths:
       - 'services/graph/**'
-      - ".github/workflows/service-graph.yml"
   pull_request:
     branches:
       - main
