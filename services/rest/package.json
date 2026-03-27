@@ -8,8 +8,10 @@
 		"test": "npx vitest --coverage.enabled true --run",
 		"test:watch": "npx vitest --coverage.enabled true",
 		"lint": "npx eslint .",
+		"prepare": "npm run generate && npm run migrate && npm run seed",
 		"generate": "npx prisma generate",
-		"migrate": "npx prisma migrate deploy"
+		"migrate": "npx prisma migrate deploy",
+		"seed": "npx prisma db seed"
 	},
 	"keywords": [],
 	"author": "",
