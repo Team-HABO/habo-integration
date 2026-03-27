@@ -21,7 +21,7 @@ export const getPublisherById = async (id: number) => {
 };
 
 export const updatePublisher = async (id: number, name: string) => {
-	return await prisma.publishingCompany.updateManyAndReturn({
+	return await prisma.publishingCompany.update({
 		where: { id },
 		data: { name }
 	});
