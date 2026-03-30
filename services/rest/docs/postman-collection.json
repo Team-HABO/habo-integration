@@ -1,8 +1,8 @@
 {
 	"info": {
 		"_postman_id": "library-api-collection",
-		"name": "Library API",
-		"description": "Complete API collection for the Library Management System",
+		"name": "HABO-Integration - REST",
+		"description": "HABO-Integration - REST",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"version": "1.0.0"
 	},
@@ -20,12 +20,37 @@
 						"header": [],
 						"url": {
 							"raw": "{{baseUrl}}/authors",
-							"host": ["{{baseUrl}}"],
-							"path": ["authors"]
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"authors"
+							]
 						},
 						"description": "Retrieve a list of all authors"
 					},
-					"response": []
+					"response": [],
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('Status code is 200', function () {",
+									"  pm.response.to.have.status(200);",
+									"});",
+									"pm.test('Response is JSON', function () {",
+									"  pm.response.to.have.header('Content-Type');",
+									"  pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');",
+									"});",
+									"pm.test('Body is an array', function () {",
+									"  const data = pm.response.json();",
+									"  pm.expect(data).to.be.an('array');",
+									"});"
+								]
+							}
+						}
+					]
 				},
 				{
 					"name": "Create Author",
@@ -43,12 +68,41 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/authors",
-							"host": ["{{baseUrl}}"],
-							"path": ["authors"]
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"authors"
+							]
 						},
 						"description": "Create a new author"
 					},
-					"response": []
+					"response": [],
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('Status code is 200 or 201', function () {",
+									"  pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+									"});",
+									"pm.test('Response has author fields', function () {",
+									"  const data = pm.response.json();",
+									"  pm.expect(data).to.have.property('id');",
+									"  pm.expect(data).to.have.property('name');",
+									"  pm.expect(data).to.have.property('surname');",
+									"});",
+									"pm.test('Save authorId from response', function () {",
+									"  const data = pm.response.json();",
+									"  if (data && data.id !== undefined && data.id !== null) {",
+									"    pm.collectionVariables.set('authorId', String(data.id));",
+									"  }",
+									"});"
+								]
+							}
+						}
+					]
 				},
 				{
 					"name": "Get Author By ID",
@@ -57,12 +111,35 @@
 						"header": [],
 						"url": {
 							"raw": "{{baseUrl}}/authors/{{authorId}}",
-							"host": ["{{baseUrl}}"],
-							"path": ["authors", "{{authorId}}"]
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"authors",
+								"{{authorId}}"
+							]
 						},
 						"description": "Retrieve a specific author by ID"
 					},
-					"response": []
+					"response": [],
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('Status code is 200', function () {",
+									"  pm.response.to.have.status(200);",
+									"});",
+									"pm.test('Author id matches request variable', function () {",
+									"  const data = pm.response.json();",
+									"  const expected = pm.variables.replaceIn('{{authorId}}');",
+									"  pm.expect(String(data.id)).to.eql(String(expected));",
+									"});"
+								]
+							}
+						}
+					]
 				},
 				{
 					"name": "Update Author",
@@ -80,12 +157,35 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/authors/{{authorId}}",
-							"host": ["{{baseUrl}}"],
-							"path": ["authors", "{{authorId}}"]
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"authors",
+								"{{authorId}}"
+							]
 						},
 						"description": "Update an existing author"
 					},
-					"response": []
+					"response": [],
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('Status code is 200', function () {",
+									"  pm.response.to.have.status(200);",
+									"});",
+									"pm.test('Author was updated', function () {",
+									"  const data = pm.response.json();",
+									"  pm.expect(data).to.have.property('name', 'Jane');",
+									"  pm.expect(data).to.have.property('surname', 'Smith');",
+									"});"
+								]
+							}
+						}
+					]
 				},
 				{
 					"name": "Delete Author",
@@ -94,12 +194,30 @@
 						"header": [],
 						"url": {
 							"raw": "{{baseUrl}}/authors/{{authorId}}",
-							"host": ["{{baseUrl}}"],
-							"path": ["authors", "{{authorId}}"]
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"authors",
+								"{{authorId}}"
+							]
 						},
 						"description": "Delete an author"
 					},
-					"response": []
+					"response": [],
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('Status code is 200 or 204', function () {",
+									"  pm.expect(pm.response.code).to.be.oneOf([200, 204]);",
+									"});"
+								]
+							}
+						}
+					]
 				}
 			]
 		},
@@ -113,12 +231,33 @@
 						"header": [],
 						"url": {
 							"raw": "{{baseUrl}}/publishers",
-							"host": ["{{baseUrl}}"],
-							"path": ["publishers"]
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"publishers"
+							]
 						},
 						"description": "Retrieve a list of all publishers"
 					},
-					"response": []
+					"response": [],
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('Status code is 200', function () {",
+									"  pm.response.to.have.status(200);",
+									"});",
+									"pm.test('Body is an array', function () {",
+									"  const data = pm.response.json();",
+									"  pm.expect(data).to.be.an('array');",
+									"});"
+								]
+							}
+						}
+					]
 				},
 				{
 					"name": "Create Publisher",
@@ -136,12 +275,40 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/publishers",
-							"host": ["{{baseUrl}}"],
-							"path": ["publishers"]
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"publishers"
+							]
 						},
 						"description": "Create a new publisher"
 					},
-					"response": []
+					"response": [],
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('Status code is 200 or 201', function () {",
+									"  pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+									"});",
+									"pm.test('Response has publisher fields', function () {",
+									"  const data = pm.response.json();",
+									"  pm.expect(data).to.have.property('id');",
+									"  pm.expect(data).to.have.property('name');",
+									"});",
+									"pm.test('Save publisherId from response', function () {",
+									"  const data = pm.response.json();",
+									"  if (data && data.id !== undefined && data.id !== null) {",
+									"    pm.collectionVariables.set('publisherId', String(data.id));",
+									"  }",
+									"});"
+								]
+							}
+						}
+					]
 				},
 				{
 					"name": "Get Publisher By ID",
@@ -150,12 +317,35 @@
 						"header": [],
 						"url": {
 							"raw": "{{baseUrl}}/publishers/{{publisherId}}",
-							"host": ["{{baseUrl}}"],
-							"path": ["publishers", "{{publisherId}}"]
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"publishers",
+								"{{publisherId}}"
+							]
 						},
 						"description": "Retrieve a specific publisher by ID"
 					},
-					"response": []
+					"response": [],
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('Status code is 200', function () {",
+									"  pm.response.to.have.status(200);",
+									"});",
+									"pm.test('Publisher id matches request variable', function () {",
+									"  const data = pm.response.json();",
+									"  const expected = pm.variables.replaceIn('{{publisherId}}');",
+									"  pm.expect(String(data.id)).to.eql(String(expected));",
+									"});"
+								]
+							}
+						}
+					]
 				},
 				{
 					"name": "Update Publisher",
@@ -173,12 +363,34 @@
 						},
 						"url": {
 							"raw": "{{baseUrl}}/publishers/{{publisherId}}",
-							"host": ["{{baseUrl}}"],
-							"path": ["publishers", "{{publisherId}}"]
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"publishers",
+								"{{publisherId}}"
+							]
 						},
 						"description": "Update an existing publisher"
 					},
-					"response": []
+					"response": [],
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('Status code is 200', function () {",
+									"  pm.response.to.have.status(200);",
+									"});",
+									"pm.test('Publisher was updated', function () {",
+									"  const data = pm.response.json();",
+									"  pm.expect(data).to.have.property('name', 'Penguin Random House');",
+									"});"
+								]
+							}
+						}
+					]
 				},
 				{
 					"name": "Delete Publisher",
@@ -187,12 +399,30 @@
 						"header": [],
 						"url": {
 							"raw": "{{baseUrl}}/publishers/{{publisherId}}",
-							"host": ["{{baseUrl}}"],
-							"path": ["publishers", "{{publisherId}}"]
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"publishers",
+								"{{publisherId}}"
+							]
 						},
 						"description": "Delete a publisher"
 					},
-					"response": []
+					"response": [],
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('Status code is 200 or 204', function () {",
+									"  pm.expect(pm.response.code).to.be.oneOf([200, 204]);",
+									"});"
+								]
+							}
+						}
+					]
 				}
 			]
 		},
@@ -205,13 +435,48 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/books",
-							"host": ["{{baseUrl}}"],
-							"path": ["books"]
+							"raw": "{{baseUrl}}/books?pageNum={{pageNum}}&pageSize={{pageSize}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"books"
+							],
+							"query": [
+								{
+									"key": "pageNum",
+									"value": "{{pageNum}}",
+									"description": "Page number (optional)"
+								},
+								{
+									"key": "pageSize",
+									"value": "{{pageSize}}",
+									"description": "Number of items per page (optional)"
+								}
+							]
 						},
-						"description": "Retrieve a list of all books"
+						"description": "Retrieve a list of books, optionally paginated"
 					},
-					"response": []
+					"response": [],
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('Status code is 200', function () {",
+									"  pm.response.to.have.status(200);",
+									"});",
+									"pm.test('Body is an array or paginated object', function () {",
+									"  const data = pm.response.json();",
+									"  const isArray = Array.isArray(data);",
+									"  const isPaginated = data && typeof data === 'object' && (Array.isArray(data.items) || Array.isArray(data.data));",
+									"  pm.expect(isArray || isPaginated).to.eql(true);",
+									"});"
+								]
+							}
+						}
+					]
 				},
 				{
 					"name": "Create Book",
@@ -225,16 +490,45 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"title\": \"The Great Gatsby\",\n  \"publishingYear\": 1925,\n  \"authorId\": 1,\n  \"publishingCompanyId\": 1\n}"
+							"raw": "{\n  \"title\": \"The Great Gatsby\",\n  \"publishingYear\": 1925,\n  \"authorId\": 6,\n  \"publishingCompanyId\": 8\n}"
 						},
 						"url": {
 							"raw": "{{baseUrl}}/books",
-							"host": ["{{baseUrl}}"],
-							"path": ["books"]
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"books"
+							]
 						},
 						"description": "Create a new book"
 					},
-					"response": []
+					"response": [],
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('Status code is 200 or 201', function () {",
+									"  pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+									"});",
+									"pm.test('Response has book fields', function () {",
+									"  const data = pm.response.json();",
+									"  pm.expect(data).to.have.property('id');",
+									"  pm.expect(data).to.have.property('title');",
+									"  pm.expect(data).to.have.property('publishingYear');",
+									"});",
+									"pm.test('Save bookId from response', function () {",
+									"  const data = pm.response.json();",
+									"  if (data && data.id !== undefined && data.id !== null) {",
+									"    pm.collectionVariables.set('bookId', String(data.id));",
+									"  }",
+									"});"
+								]
+							}
+						}
+					]
 				},
 				{
 					"name": "Get Book By ID",
@@ -243,12 +537,35 @@
 						"header": [],
 						"url": {
 							"raw": "{{baseUrl}}/books/{{bookId}}",
-							"host": ["{{baseUrl}}"],
-							"path": ["books", "{{bookId}}"]
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"books",
+								"{{bookId}}"
+							]
 						},
 						"description": "Retrieve a specific book by ID"
 					},
-					"response": []
+					"response": [],
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('Status code is 200', function () {",
+									"  pm.response.to.have.status(200);",
+									"});",
+									"pm.test('Book id matches request variable', function () {",
+									"  const data = pm.response.json();",
+									"  const expected = pm.variables.replaceIn('{{bookId}}');",
+									"  pm.expect(String(data.id)).to.eql(String(expected));",
+									"});"
+								]
+							}
+						}
+					]
 				},
 				{
 					"name": "Update Book",
@@ -262,16 +579,39 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"title\": \"The Great Gatsby - Edition 2\",\n  \"publishingYear\": 1926,\n  \"authorId\": 1,\n  \"publishingCompanyId\": 1\n}"
+							"raw": "{\n  \"title\": \"The Great Gatsby - Edition 2\",\n  \"publishingYear\": 1926,\n  \"authorId\": 5,\n  \"publishingCompanyId\": 6\n}"
 						},
 						"url": {
 							"raw": "{{baseUrl}}/books/{{bookId}}",
-							"host": ["{{baseUrl}}"],
-							"path": ["books", "{{bookId}}"]
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"books",
+								"{{bookId}}"
+							]
 						},
 						"description": "Update an existing book"
 					},
-					"response": []
+					"response": [],
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('Status code is 200', function () {",
+									"  pm.response.to.have.status(200);",
+									"});",
+									"pm.test('Book was updated', function () {",
+									"  const data = pm.response.json();",
+									"  pm.expect(data).to.have.property('title', 'The Great Gatsby - Edition 2');",
+									"  pm.expect(data).to.have.property('publishingYear', 1926);",
+									"});"
+								]
+							}
+						}
+					]
 				},
 				{
 					"name": "Delete Book",
@@ -280,12 +620,30 @@
 						"header": [],
 						"url": {
 							"raw": "{{baseUrl}}/books/{{bookId}}",
-							"host": ["{{baseUrl}}"],
-							"path": ["books", "{{bookId}}"]
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"books",
+								"{{bookId}}"
+							]
 						},
 						"description": "Delete a book"
 					},
-					"response": []
+					"response": [],
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('Status code is 200 or 204', function () {",
+									"  pm.expect(pm.response.code).to.be.oneOf([200, 204]);",
+									"});"
+								]
+							}
+						}
+					]
 				}
 			]
 		}
@@ -314,6 +672,18 @@
 			"value": "1",
 			"type": "string",
 			"description": "Book ID (replace with actual ID)"
+		},
+		{
+			"key": "pageNum",
+			"value": "1",
+			"type": "string",
+			"description": "Page number for paginated book listing"
+		},
+		{
+			"key": "pageSize",
+			"value": "10",
+			"type": "string",
+			"description": "Page size for paginated book listing"
 		}
 	]
 }
