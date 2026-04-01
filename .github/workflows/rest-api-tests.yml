@@ -1,4 +1,4 @@
-name: Automated API tests using Postman CLI
+name: Service REST CI
 
 on:
   workflow_call:
