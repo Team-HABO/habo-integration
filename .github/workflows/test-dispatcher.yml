@@ -3,6 +3,9 @@ name: Dispatch API tests
 on:
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   rest-api-tests:
     uses: ./.github/workflows/rest-api-tests.yml
