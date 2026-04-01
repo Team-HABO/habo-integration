@@ -1,0 +1,19 @@
+name: Dispatch API tests
+
+on:
+  workflow_dispatch:
+
+jobs:
+  rest-api-tests:
+    uses: ./.github/workflows/rest-api-tests.yml
+    secrets: inherit
+
+  soap-api-tests:
+    uses: ./.github/workflows/soap-api-tests.yml
+    secrets: inherit
+
+  graph-api-tests:
+    uses: ./.github/workflows/service-graph.yml
+    secrets: inherit
+
+  #TODO: Add gRPC workflow here
