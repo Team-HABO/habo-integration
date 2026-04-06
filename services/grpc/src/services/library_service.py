@@ -1,4 +1,4 @@
-import grpc
+import grpc # type: ignore
 import threading
 
 # These imports will work after you run the protoc compiler (Step 2)

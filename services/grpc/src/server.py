@@ -1,4 +1,4 @@
-import grpc
+import grpc # type: ignore 
 from concurrent import futures
 
 from src.generated import library_pb2_grpc
