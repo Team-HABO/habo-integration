@@ -22,7 +22,6 @@ export function addAuthorLinks(author: { id: number }): HateoasLink[] {
 export function addPublisherLinks(publisher: { id: number }): HateoasLink[] {
 	return [
 		{ rel: "self", href: `/publishers/${publisher.id}` },
-		{ rel: "books", href: `/publishers/${publisher.id}/books` },
 		{ rel: "collection", href: "/publishers" }
 	];
 }
