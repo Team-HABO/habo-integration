@@ -1,6 +1,8 @@
 import grpc # type: ignore 
 from concurrent import futures
+from grpc_reflection.v1alpha import reflection # type: ignore
 
+from src.generated import library_pb2
 from src.generated import library_pb2_grpc
 from src.services.library_service import LibraryService
 
@@ -13,6 +15,13 @@ def serve():
 
     # Register our service implementation with the server
     library_pb2_grpc.add_LibraryServiceServicer_to_server(LibraryService(), server)
+
+    # Enable server reflection so tools like Bruno can auto-discover methods
+    SERVICE_NAMES = (
+        library_pb2.DESCRIPTOR.services_by_name["LibraryService"].full_name,
+        reflection.SERVICE_NAME,
+    )
+    reflection.enable_server_reflection(SERVICE_NAMES, server)
 
     # Listen on all interfaces, port 50051
     server.add_insecure_port(f"[::]:{PORT}")
