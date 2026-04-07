@@ -15,7 +15,6 @@ export function addBookLinks(book: { id: number; authorId: number; publishingCom
 export function addAuthorLinks(author: { id: number }): HateoasLink[] {
 	return [
 		{ rel: "self", href: `/authors/${author.id}` },
-		{ rel: "books", href: `/authors/${author.id}/books` },
 		{ rel: "collection", href: "/authors" }
 	];
 }
