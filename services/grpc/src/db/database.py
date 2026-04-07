@@ -1,7 +1,7 @@
 import sqlite3
 import os
 
-# Path to the shared SQLite database (copied into data/ folder)
+# Path to the shared SQLite database.
 DB_PATH = os.path.join(os.path.dirname(__file__), "../../data/library.db")
 
 
