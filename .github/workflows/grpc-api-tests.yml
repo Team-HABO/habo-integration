@@ -23,6 +23,11 @@ jobs:
       - name: Run gRPC service container
         run: docker run -d --name grpc-service -p 50051:50051 grpc-service
 
+      - name: Install grpcurl
+        run: |
+          curl -sSL https://github.com/fullstorydev/grpcurl/releases/download/v1.9.1/grpcurl_1.9.1_linux_amd64.tar.gz | tar xz
+          sudo mv grpcurl /usr/local/bin/
+
       - name: Wait for gRPC service
         run: |
           for i in {1..15}; do
@@ -51,4 +56,3 @@ jobs:
           grpcurl -plaintext -d '{"title": "Bad", "author_id": 999999, "publishing_company_id": 1, "publishing_year": 2024}' localhost:50051 library.LibraryService/CreateBook 2>&1 && exit 1 || true
 
           echo "All gRPC tests passed!"
-          "
